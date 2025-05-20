@@ -1,11 +1,20 @@
-import React from 'react'
-
-// Använd context för att hämta ut listan med events.. 
+import React from "react";
+import { useEvents } from "../contexts/EventContext";
+import EventCard from "../components/Events/EventCard";
+import "./Events.css";
 
 const Events = () => {
-  return (
-    <div>Events</div>
-  )
-}
+  const { events, loading } = useEvents();
 
-export default Events
+  if (loading) return <p>Loading...</p>;
+
+  return (
+    <div className="events-container">
+      {events.map((event) => (
+        <EventCard key={event.id} event={event} />
+      ))}
+    </div>
+  );
+};
+
+export default Events;

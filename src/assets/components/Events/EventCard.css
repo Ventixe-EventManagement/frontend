@@ -1,0 +1,44 @@
+.event-card {
+  background-color: var(--card-background-color);
+  border: 1px solid var(--card-border-color);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  width: 280px;
+  font-family: var(--font);
+}
+
+.event-card .tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 500;
+  background-color: var(--gray-30);
+  color: var(--secondary-100);
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.event-card .image-placeholder {
+  background-color: var(--gray-30);
+  border-radius: 1rem;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.event-card .date {
+  font-size: 0.85rem;
+  color: var(--text-muted-color);
+  margin-bottom: 0.3rem;
+}
+
+.event-card .title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0.2rem 0;
+}
+
+.event-card .location {
+  font-size: 0.85rem;
+  color: var(--text-muted-color);
+}
