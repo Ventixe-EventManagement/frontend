@@ -11,12 +11,14 @@
 .event-card .tag {
   font-size: 0.75rem;
   padding: 0.25rem 0.6rem;
-  border-radius: 999px;
+  border-radius: 22px;
   font-weight: 500;
-  background-color: var(--gray-30);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color:  rgba(255, 255, 255, 0.80);
   color: var(--secondary-100);
-  display: inline-block;
-  margin-bottom: 0.75rem;
+  font-size: 11px;
 }
 
 .event-card .image-placeholder {
@@ -24,6 +26,7 @@
   border-radius: 1rem;
   height: 150px;
   margin-bottom: 1rem;
+    position: relative;
 }
 
 .event-card .date {
@@ -39,6 +42,15 @@
 }
 
 .event-card .location {
-  font-size: 0.85rem;
-  color: var(--text-muted-color);
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--gray-70);
+}
+
+.location-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
 }

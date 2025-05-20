@@ -8,22 +8,27 @@ const EventCard = ({ event }) => {
     month: "long",
     day: "numeric",
   });
-  const formattedTime = dateTime.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+const formattedTime = dateTime.toLocaleTimeString('en-US', {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: true
+});
 
   return (
     <div className="event-card">
-      <span className="tag">{event.category}</span>
 
-      <div className="image-placeholder"></div>
+      <div className="image-placeholder">
+        <span className="tag">{event.category}</span>
+      </div>
 
       <p className="date">
         {formattedDate} — {formattedTime}
       </p>
       <h3 className="title">{event.eventName}</h3>
-      <p className="location">📍 {event.location}</p>
+      <p className="location">
+        <img src="/public/icons/MapPin.svg" alt="Location" className="location-icon" />
+        {event.location}
+      </p>
     </div>
   );
 };
