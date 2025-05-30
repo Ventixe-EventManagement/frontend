@@ -17,7 +17,7 @@ const LoginForm = () => {
     if (!result.success) {
       setError(result.message);
     } else {
-      window.location.href = '/events';
+      window.location.href = '/';
     }
   };
 

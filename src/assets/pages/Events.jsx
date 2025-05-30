@@ -8,6 +8,10 @@ const Events = () => {
 
   if (loading) return <p>Loading...</p>;
 
+  if (events.length === 0) {
+    return <p>Inga event tillgängliga just nu.</p>;
+  }
+
   return (
     <div className="events-container">
       {events.map((event) => (
