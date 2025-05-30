@@ -1,14 +1,29 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import PortalLayout from './assets/layouts/PortalLayout';
-import Events from './assets/pages/Events';
-import EventDetails from './assets/pages/EventDetails';
+import CenterLayout from './assets/layouts/CenterLayout.jsx';
+import PortalLayout from './assets/layouts/PortalLayout.jsx';
+import PrivateRoute from './assets/utils/PrivateRoute.jsx';
+import Login from './assets/pages/Login.jsx';
+import Home from './assets/pages/Home.jsx';
+import Events from './assets/pages/Events.jsx';
+import EventDetails from './assets/pages/EventDetails.jsx';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<PortalLayout />}>
+      {/* Ej skyddat) */}
+      <Route element={<CenterLayout />}>
+        <Route path="/login" element={<Login />} />
+      </Route>
+
+      {/* Skyddat område */}
+      <Route path="/" element={
+        <PrivateRoute>
+          <PortalLayout />
+        </PrivateRoute>
+      }>
+        <Route index element={<Home />} />
         <Route path="events" element={<Events />} />
         <Route path="events/:id" element={<EventDetails />} />
       </Route>
