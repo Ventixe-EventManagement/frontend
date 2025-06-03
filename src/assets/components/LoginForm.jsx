@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './LoginForm.css';
+
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -24,16 +26,14 @@ const LoginForm = () => {
   return (
     <div className="auth-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Welcome back</h2>
+        <h2>Sign in</h2>
         {error && <div className="error-box">{error}</div>}
-
         <label>Email</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-
         <label>Password</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-
-        <button type="submit" className="primary-button">Login</button>
+        <button type="submit" className="primary-button">Sign in</button>
+        <p className="register-link">Don’t have an account? <Link to="/register">Register here</Link></p>
       </form>
     </div>
   );
