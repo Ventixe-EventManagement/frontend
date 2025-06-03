@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URLS } from '../../config.js';
 
 const RegisterForm = () => {
   const [form, setForm] = useState({
@@ -19,12 +20,12 @@ const RegisterForm = () => {
     setError('');
 
     if (form.password !== form.confirmPassword) {
-      setError('Lösenorden matchar inte.');
+      setError('Passwords do not match.');
       return;
     }
 
     try {
-      const response = await fetch('https://ventixe-accountserviceprovider.azurewebsites.net/api/accounts/register', {
+      const response = await fetch(`${API_URLS.account}/api/accounts/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
@@ -32,33 +33,32 @@ const RegisterForm = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        setError(data.error || 'Något gick fel vid registreringen.');
+        setError(data.error || 'Something went wrong during registration.');
         return;
       }
 
-      // Skickar vidare till verify-sida (token kommer via e-postlänk)
       navigate(`/verify?email=${encodeURIComponent(form.email)}`);
     } catch (err) {
-      setError('Kunde inte kontakta servern.');
+      setError('Could not contact the server.');
     }
   };
 
   return (
     <div className="auth-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Skapa konto</h2>
+        <h2>Create Account</h2>
         {error && <div className="error-box">{error}</div>}
 
         <label>Email</label>
         <input type="email" name="email" value={form.email} onChange={handleChange} required />
 
-        <label>Lösenord</label>
+        <label>Password</label>
         <input type="password" name="password" value={form.password} onChange={handleChange} required />
 
-        <label>Bekräfta lösenord</label>
+        <label>Confirm Password</label>
         <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
 
-        <button type="submit" className="primary-button">Skicka</button>
+        <button type="submit" className="primary-button">Submit</button>
       </form>
     </div>
   );
