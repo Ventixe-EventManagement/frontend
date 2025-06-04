@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_URLS } from '../../config.js';
+import './VerifyEmailPage.css';
 
 const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();
@@ -31,11 +32,9 @@ const VerifyEmailPage = () => {
         return;
       }
 
-      setStatus('Verifiering lyckades! Du skickas nu till inloggning...');
-      setTimeout(() => {
-        navigate(`/login`);
-      }, 1500);
-    } catch (err) {
+      setStatus('Verifiering lyckades! Du skickas till inloggning...');
+      setTimeout(() => navigate('/login'), 1500);
+    } catch {
       setError('Ett oväntat fel uppstod.');
       setStatus('');
     }
@@ -50,50 +49,48 @@ const VerifyEmailPage = () => {
         body: JSON.stringify({ email })
       });
 
-      if (response.ok) {
-        setResendMessage('En ny kod har skickats till din e-postadress.');
-      } else {
-        const data = await response.json();
-        setResendMessage(data.error || 'Kunde inte skicka ny kod.');
-      }
-    } catch (err) {
-      setResendMessage('Något gick fel vid försök att skicka ny kod.');
+      const data = await response.json();
+      setResendMessage(response.ok ? 'En ny kod har skickats!' : (data.error || 'Kunde inte skicka ny kod.'));
+    } catch {
+      setResendMessage('Något gick fel vid försök att skicka kod.');
     }
   };
 
   if (!email) {
     return (
-      <div className="verify-email">
-        <h2>Ogiltig åtkomst</h2>
-        <p>Ingen e-postadress angiven.</p>
+      <div className="auth-container">
+        <div className="login-form">
+          <h2>Ogiltig åtkomst</h2>
+          <p>Ingen e-postadress angiven.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="verify-email">
-      <h2>Verifiera din e-post</h2>
-      <p>Vi har skickat en kod till <strong>{email}</strong>. Ange den nedan.</p>
+    <div className="auth-container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Verifiera din e-post</h2>
+        <p>Kod skickades till <strong>{email}</strong>.</p>
 
-      <form onSubmit={handleSubmit}>
+        {status && <div className="success-box">{status}</div>}
+        {error && <div className="error-box">{error}</div>}
+        {resendMessage && <div className="info-box">{resendMessage}</div>}
+
         <input
           type="text"
-          name="code"
           placeholder="Ange verifieringskod"
           value={code}
           onChange={(e) => setCode(e.target.value)}
           required
         />
-        <button type="submit">Verifiera</button>
+
+        <button type="submit" className="primary-button">Verifiera</button>
+
+        <button type="button" onClick={handleResend} className="secondary-button" style={{ marginTop: '1rem' }}>
+          Skicka om kod
+        </button>
       </form>
-
-      <button onClick={handleResend} style={{ marginTop: '1rem' }}>
-        Skicka om kod
-      </button>
-
-      {resendMessage && <p style={{ marginTop: '0.5rem' }}>{resendMessage}</p>}
-      {status && <p style={{ color: 'green' }}>{status}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };

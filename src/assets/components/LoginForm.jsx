@@ -19,7 +19,6 @@ const LoginForm = () => {
     if (!result.success) {
       setError(result.message);
     }
-    // 👇 Redirects sker redan i login() via navigate!
   };
 
   return (

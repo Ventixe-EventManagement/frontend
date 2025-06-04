@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { API_URLS } from '../../config.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { jwtDecode } from 'jwt-decode';
 
 const CompleteProfileForm = () => {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -12,27 +17,20 @@ const CompleteProfileForm = () => {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const email = searchParams.get('email');
 
   useEffect(() => {
-    const fetchUserId = async () => {
+    if (token) {
       try {
-        const res = await fetch(`${API_URLS.account}/api/accounts/user-id?email=${encodeURIComponent(email)}`);
-        const userId = await res.text();
+        const decoded = jwtDecode(token);
+        const userId = decoded[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        ];
         setForm(prev => ({ ...prev, userId }));
       } catch {
-        setError('Kunde inte hämta användar-id.');
-      } finally {
-        setLoading(false);
+        setError('Kunde inte läsa användar-ID från token.');
       }
-    };
-
-    if (email) fetchUserId();
-  }, [email]);
+    }
+  }, [token]);
 
   const handleChange = (e) => {
     setForm(prev => ({
@@ -49,8 +47,10 @@ const CompleteProfileForm = () => {
     try {
       const response = await fetch(`${API_URLS.profile}/api/profile/upsert`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify(form)
       });
 
@@ -60,16 +60,12 @@ const CompleteProfileForm = () => {
         return;
       }
 
-      setSuccess('Profil sparad! Du skickas vidare till inloggning...');
-      setTimeout(() => navigate('/login'), 2000);
+      setSuccess('Profil sparad! Du skickas vidare...');
+      setTimeout(() => navigate('/'), 2000);
     } catch {
       setError('Serverfel vid sparande.');
     }
   };
-
-  if (loading) {
-    return <div className="auth-container"><p>Hämtar användarinfo...</p></div>;
-  }
 
   return (
     <div className="auth-container">
@@ -85,7 +81,7 @@ const CompleteProfileForm = () => {
         <input type="text" name="lastName" value={form.lastName} onChange={handleChange} required />
 
         <label>Telefonnummer</label>
-        <input type="tel" name="phoneNumber" value={form.phoneNumber} onChange={handleChange} pattern="[0-9+\s\-]+" />
+        <input type="tel" name="phoneNumber" value={form.phoneNumber} onChange={handleChange} />
 
         <button type="submit" className="primary-button">Spara & Gå vidare</button>
       </form>

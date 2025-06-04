@@ -1,17 +1,17 @@
 import { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import { API_URLS } from '../../config.js';
-import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('authToken'));
-  const [user, setUser] = useState(null); // { userId, firstName, lastName }
-  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
   const login = async (email, password) => {
     try {
+      // 🔐 Logga in
       const response = await axios.post(
         `${API_URLS.auth}/api/signin/login`,
         { email, password }
@@ -21,15 +21,15 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('authToken', token);
       setToken(token);
 
-      // Hämta userId
-      const userIdRes = await axios.get(
-        `${API_URLS.account}/api/accounts/user-id?email=${encodeURIComponent(email)}`
-      );
-      const userId = userIdRes.data;
+      // 🧠 Dekoda token för att få ut userId
+      const decoded = jwtDecode(token);
+      const userId = decoded[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+      ];
 
-      // Kolla om profilen finns
+      // 💬 Kontrollera om profil finns – OBS: skickar INTE med userId
       const profileResponse = await axios.get(
-        `${API_URLS.profile}/api/profile/exists?userId=${userId}`,
+        `${API_URLS.profile}/api/profile/exists`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -37,24 +37,11 @@ export const AuthProvider = ({ children }) => {
         }
       );
 
+      // 🔄 Navigera beroende på om profilen finns
       if (profileResponse.data?.exists === true) {
-        // Hämta även profilinformation
-        const fullProfile = await axios.get(
-          `${API_URLS.profile}/api/profile/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-
-        const { firstName, lastName } = fullProfile.data;
-        setUser({ userId, firstName, lastName });
-        navigate('/'); // Gå till startsidan
+        window.location.href = '/';
       } else {
-        // Saknar profil → redirect till complete-profile
-        setUser({ userId }); // Vi sparar ändå userId
-        navigate(`/complete-profile?email=${encodeURIComponent(email)}`);
+        window.location.href = `/complete-profile?email=${encodeURIComponent(email)}`;
       }
 
       return { success: true };

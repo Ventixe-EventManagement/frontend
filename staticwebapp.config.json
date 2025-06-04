@@ -1,6 +1,6 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/api/*", "/static/*", "/assets/*"]
+    "exclude": ["/api/*", "/static/*"]
   }
 }

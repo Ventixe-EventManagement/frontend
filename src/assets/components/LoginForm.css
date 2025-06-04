@@ -60,7 +60,7 @@ body {
 
 .primary-button {
   margin-top: 0.5rem;
-  background: var(--primary-100);
+  background: #F26CF9;
   color: var(--gray-10);
   width: 100%;
   padding: 0.85rem;
