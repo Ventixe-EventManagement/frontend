@@ -1,23 +1,4 @@
 {
-  "routes": [
-    {
-      "route": "/",
-      "allowedRoles": ["authenticated"]
-    },
-    {
-      "route": "/complete-profile",
-      "allowedRoles": ["authenticated"]
-    },
-    {
-      "route": "/login",
-      "methods": ["GET"],
-      "allowedRoles": ["anonymous"]
-    },
-    {
-      "route": "/*",
-      "allowedRoles": ["authenticated"]
-    }
-  ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": ["/api/*", "/static/*", "/assets/*"]
