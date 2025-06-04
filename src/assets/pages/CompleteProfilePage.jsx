@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_URLS } from '../../config.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import "./CompleteProfilePage.css";
 
 const CompleteProfileForm = () => {
@@ -14,6 +15,7 @@ const CompleteProfileForm = () => {
   const [error, setError] = useState('');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const email = searchParams.get('email');
 
@@ -47,8 +49,10 @@ const CompleteProfileForm = () => {
     try {
       const response = await fetch(`${API_URLS.profile}/api/profile/upsert`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify(form)
       });
 
@@ -63,6 +67,12 @@ const CompleteProfileForm = () => {
       setError('Serverfel vid sparande.');
     }
   };
+
+useEffect(() => {
+  if (!token) {
+    navigate('/login');
+  }
+}, [token, navigate]);
 
   return (
     <div className="auth-container">
