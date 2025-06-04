@@ -31,10 +31,10 @@ const VerifyEmailPage = () => {
         return;
       }
 
-      setStatus('Verifiering lyckades! Omdirigerar...');
+      setStatus('Verifiering lyckades! Du skickas nu till inloggning...');
       setTimeout(() => {
-        navigate(`/complete-profile?email=${encodeURIComponent(email)}`);
-      }, 1000);
+        navigate(`/login`);
+      }, 1500);
     } catch (err) {
       setError('Ett oväntat fel uppstod.');
       setStatus('');

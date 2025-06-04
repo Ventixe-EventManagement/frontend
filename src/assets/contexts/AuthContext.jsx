@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import axios from 'axios';
+import { API_URLS } from '../../config.js';
 
 const AuthContext = createContext();
 
@@ -7,25 +8,40 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('authToken'));
   const [user, setUser] = useState(null);
 
-const login = async (email, password) => {
-  try {
-    const response = await axios.post(
-      'https://ventixe-authserviceprovider-fjgta2ecdue9cfa6.swedencentral-01.azurewebsites.net/api/signin/login',
-      { email, password }
-    );
+  const login = async (email, password) => {
+    try {
+      const response = await axios.post(
+        `${API_URLS.auth}/api/signin/login`,
+        { email, password }
+      );
 
-    const { token } = response.data;
-    localStorage.setItem('authToken', token);
-    setToken(token);
+      const { token } = response.data;
+      localStorage.setItem('authToken', token);
+      setToken(token);
 
-    return { success: true };
-  } catch (error) {
-    return {
-      success: false,
-      message: error.response?.data?.error || 'Login failed',
-    };
-  }
-};
+      const profileResponse = await axios.get(
+        `${API_URLS.profile}/api/profile/exists?email=${encodeURIComponent(email)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (profileResponse.data?.exists === true) {
+        window.location.href = '/';
+      } else {
+        window.location.href = `/complete-profile?email=${encodeURIComponent(email)}`;
+      }
+
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.error || 'Login failed',
+      };
+    }
+  };
 
   const logout = () => {
     localStorage.removeItem('authToken');
