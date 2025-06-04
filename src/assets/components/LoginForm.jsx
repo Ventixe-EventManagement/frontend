@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './LoginForm.css';
 
-
 const LoginForm = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,9 +18,8 @@ const LoginForm = () => {
     const result = await login(email, password);
     if (!result.success) {
       setError(result.message);
-    } else {
-      window.location.href = '/';
     }
+    // 👇 Redirects sker redan i login() via navigate!
   };
 
   return (
