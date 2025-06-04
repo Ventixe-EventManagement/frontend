@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_URLS } from '../../config.js';
+import "./CompleteProfilePage.css";
 
 const CompleteProfileForm = () => {
   const [form, setForm] = useState({

@@ -1,66 +1,99 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_URLS } from '../../config.js';
 
 const VerifyEmailPage = () => {
-  const [status, setStatus] = useState('Verifying...');
   const [searchParams] = useSearchParams();
+  const email = searchParams.get('email');
+
+  const [code, setCode] = useState('');
+  const [status, setStatus] = useState('');
+  const [error, setError] = useState('');
+  const [resendMessage, setResendMessage] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const verify = async () => {
-      const email = searchParams.get('email');
-      const token = searchParams.get('token');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setStatus('Verifierar...');
 
-      if (!email || !token) {
-        setStatus('Ogiltig verifieringslänk.');
+    try {
+      const response = await fetch(`${API_URLS.account}/api/accounts/confirm-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code })
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.error || 'Verifiering misslyckades.');
+        setStatus('');
         return;
       }
 
-      try {
-        const userIdResponse = await fetch(
-          `${API_URLS.account}/api/accounts/user-id?email=${encodeURIComponent(email)}`
-        );
+      setStatus('Verifiering lyckades! Omdirigerar...');
+      setTimeout(() => {
+        navigate(`/complete-profile?email=${encodeURIComponent(email)}`);
+      }, 1000);
+    } catch (err) {
+      setError('Ett oväntat fel uppstod.');
+      setStatus('');
+    }
+  };
 
-        if (!userIdResponse.ok) {
-          setStatus('Kunde inte hitta användaren.');
-          return;
-        }
+  const handleResend = async () => {
+    setResendMessage('');
+    try {
+      const response = await fetch(`${API_URLS.account}/api/accounts/resend-verification`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
 
-        const userId = await userIdResponse.text();
-
-        const confirmResponse = await fetch(
-          `${API_URLS.account}/api/accounts/confirm-email`,
-          {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, token })
-          }
-        );
-
-        if (!confirmResponse.ok) {
-          const data = await confirmResponse.json();
-          setStatus(data.error || 'Verifiering misslyckades.');
-          return;
-        }
-
-        setStatus('Verifiering lyckades! Omdirigerar...');
-        setTimeout(() => {
-          navigate(`/complete-profile?email=${encodeURIComponent(email)}`);
-        }, 1000);
-
-      } catch (err) {
-        setStatus('Ett fel uppstod.');
+      if (response.ok) {
+        setResendMessage('En ny kod har skickats till din e-postadress.');
+      } else {
+        const data = await response.json();
+        setResendMessage(data.error || 'Kunde inte skicka ny kod.');
       }
-    };
+    } catch (err) {
+      setResendMessage('Något gick fel vid försök att skicka ny kod.');
+    }
+  };
 
-    verify();
-  }, [searchParams, navigate]);
+  if (!email) {
+    return (
+      <div className="verify-email">
+        <h2>Ogiltig åtkomst</h2>
+        <p>Ingen e-postadress angiven.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="verify-email">
-      <h2>{status}</h2>
+      <h2>Verifiera din e-post</h2>
+      <p>Vi har skickat en kod till <strong>{email}</strong>. Ange den nedan.</p>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="code"
+          placeholder="Ange verifieringskod"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          required
+        />
+        <button type="submit">Verifiera</button>
+      </form>
+
+      <button onClick={handleResend} style={{ marginTop: '1rem' }}>
+        Skicka om kod
+      </button>
+
+      {resendMessage && <p style={{ marginTop: '0.5rem' }}>{resendMessage}</p>}
+      {status && <p style={{ color: 'green' }}>{status}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };
