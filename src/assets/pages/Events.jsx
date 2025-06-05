@@ -13,11 +13,11 @@ const Events = () => {
   }
 
   return (
-    <div className="events-container">
-      {events.map((event) => (
-        <EventCard key={event.id} event={event} />
-      ))}
-    </div>
+      <div className="events-container">
+        {events.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
   );
 };
 
