@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CreateEvent.css';
+import { useAuth } from '../contexts/AuthContext';
 
 const CreateEvent = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const CreateEvent = () => {
 
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -24,9 +26,12 @@ const CreateEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const token = localStorage.getItem('authToken');
+    if (!token) {
+      setError("Du är inte inloggad.");
+      return;
+    }
 
+    try {
       const response = await fetch('https://ventixe-eventmanagement-ctbse9a6f5f0h4h9.swedencentral-01.azurewebsites.net/api/events', {
         method: 'POST',
         headers: {
@@ -41,7 +46,7 @@ const CreateEvent = () => {
         throw new Error(err || 'Något gick fel vid skapandet av event');
       }
 
-      navigate('/myevents');
+      navigate('/my-events');
     } catch (err) {
       console.error('Error creating event:', err.message);
       setError(err.message);
