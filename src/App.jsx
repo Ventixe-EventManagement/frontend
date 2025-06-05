@@ -11,6 +11,9 @@ import Home from './assets/pages/Home.jsx';
 import Events from './assets/pages/Events.jsx';
 import EventDetails from './assets/pages/EventDetails.jsx';
 import Bookings from './assets/pages/Bookings.jsx';
+import MyEvents from './assets/pages/MyEvents.jsx';
+import CreateEvent from './assets/pages/CreateEvent.jsx';
+
 
 
 function App() {
@@ -34,6 +37,8 @@ function App() {
         <Route path="events" element={<Events />} />
         <Route path="events/:id" element={<EventDetails />} />
         <Route path="bookings" element={<Bookings />} />
+        <Route path="my-events" element={<MyEvents />} />
+        <Route path="events/create" element={<CreateEvent />} />
       </Route>
 
       {/* Fallback: alla okända vägar → login */}

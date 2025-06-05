@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EventDetailsCard from "../components/Events/EventDetailsCard";
 import BookingModal from "../components/Bookings/BookingModal";
+import "./EventDetails.css";
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -23,7 +24,7 @@ const EventDetails = () => {
   return (
     <div className="event-details-page">
       <EventDetailsCard event={event} />
-      <button onClick={() => setShowModal(true)}>Boka detta event</button>
+      <button className="book-button" onClick={() => setShowModal(true)}>Boka detta event</button>
 
       <BookingModal
         isOpen={showModal}

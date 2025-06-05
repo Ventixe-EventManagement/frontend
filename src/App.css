@@ -214,7 +214,7 @@ body {
   color: var(--gray-80);
 }
 
-.login-form input {
+form.login-form input {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid var(--input-border-color);
@@ -238,7 +238,7 @@ body {
   box-sizing: border-box;
 }
 
-.primary-button {
+button.primary-button {
   margin-top: 0.5rem;
   background: #F26CF9;
   color: var(--gray-10);
@@ -254,7 +254,7 @@ body {
   transition: background 0.2s ease-in-out;
 }
 
-.primary-button:hover {
+button.primary-button:hover {
   background: var(--primary-90);
 }
 
@@ -360,3 +360,95 @@ body {
   border-radius: 1rem;
 }
  /* HEADER END */
+
+ /* === Booking Modal Styling === */
+
+.modal {
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--card-background-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal form,
+.modal > div {
+  padding: 2rem;
+}
+
+.modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--gray-100);
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: var(--gray-80);
+}
+
+.modal select {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 40px;
+  background: var(--input-background-color);
+  color: var(--input-text-color);
+  margin-bottom: 1rem;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
+.modal button {
+  padding: 0.75rem 1.2rem;
+  border-radius: 40px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: var(--font);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-right: 0.5rem;
+}
+
+.modal button[type="submit"] {
+  background-color: var(--primary-100);
+  color: var(--gray-10);
+}
+
+.modal button[type="submit"]:hover {
+  background-color: var(--primary-90);
+}
+
+.modal button[type="button"] {
+  background-color: var(--gray-30);
+  color: var(--gray-90);
+}
+
+.modal button[type="button"]:hover {
+  background-color: var(--gray-40);
+}
+
+button.sign-out-btn {
+  background-color:var(--cool-gray-20);
+}
+
+nav.side-navbar {
+  background-color: var(--cool-gray-10);
+}
+
+button.sign-out-btn:hover {
+  background-color: var(--cool-gray-30);
+}

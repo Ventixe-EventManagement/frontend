@@ -1,0 +1,27 @@
+.book-button {
+  background-color: #F26CF9;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
+}
+
+.book-button:hover {
+  background-color: #d955d9;
+}
+
+.book-button .plus {
+  font-size: 1.2rem;
+}
+
+.book-button .arrow {
+  font-size: 0.9rem;
+}

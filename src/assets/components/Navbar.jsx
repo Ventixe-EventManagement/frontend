@@ -1,8 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar = () => {
+  const { logout } = useAuth();
+
   return (
     <nav className="side-navbar">
       <div className="navbar-top">
@@ -32,13 +35,12 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-bottom">
-        <button className="sign-out-btn">
+        <button className="sign-out-btn" onClick={logout}>
           <img src="/icons/SignOut.svg" alt="" className="nav-icon" />
           <span>Sign Out</span>
         </button>
       </div>
     </nav>
-
   );
 };
 

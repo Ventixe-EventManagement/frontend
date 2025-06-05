@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
 import { API_URLS } from '../../config';
 import { useAuth } from './AuthContext';
 

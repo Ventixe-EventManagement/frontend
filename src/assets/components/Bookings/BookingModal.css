@@ -1,0 +1,70 @@
+/* === Booking Modal Styling === */
+
+.modal {
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--card-background-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal form,
+.modal > div {
+  padding: 2rem;
+}
+
+.modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--gray-100);
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: var(--gray-80);
+}
+
+.modal select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 40px;
+  background: var(--input-background-color);
+  color: var(--input-text-color);
+  margin-bottom: 1rem;
+}
+
+.modal button {
+  padding: 0.75rem 1.2rem;
+  border-radius: 40px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: var(--font);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-right: 0.5rem;
+}
+
+.modal button[type="submit"] {
+  background-color: var(--primary-100);
+  color: var(--gray-10);
+}
+
+.modal button[type="submit"]:hover {
+  background-color: var(--primary-90);
+}
+
+.modal button[type="button"] {
+  background-color: var(--gray-30);
+  color: var(--gray-90);
+}

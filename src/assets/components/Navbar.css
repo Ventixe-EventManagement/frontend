@@ -1,6 +1,6 @@
 .side-navbar {
   grid-area: nav;
-  background-color: var(--nav-background-color);
+  background-color: var(--c);
   padding: 2rem 1rem;
   border-radius: 1rem;
   display: flex;
@@ -73,7 +73,7 @@
 
 .sign-out-btn {
   width: 100%;
-  background-color:var(--gray-40);
+  background-color:var(--gray-50);
   color: var(--secondary-100);
   font-weight: 500;
   font-size: 1rem;
@@ -87,6 +87,4 @@
   transition: background-color 0.2s ease-in-out;
 }
 
-.sign-out-btn:hover {
-  background-color: var(--gray-50);
-}
+
