@@ -9,15 +9,32 @@ const EventDetails = () => {
   const [event, setEvent] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    const fetchEvent = async () => {
-      const response = await fetch(`https://ventixe-eventmanagement-ctbse9a6f5f0h4h9.swedencentral-01.azurewebsites.net/api/Events/${id}`);
-      const data = await response.json();
-      setEvent(data);
-    };
+useEffect(() => {
+  const fetchEvent = async () => {
+    const token = localStorage.getItem("token");
 
-    fetchEvent();
-  }, [id]);
+    const response = await fetch(
+      `https://ventixe-eventmanagement-ctbse9a6f5f0h4h9.swedencentral-01.azurewebsites.net/api/Events/${id}`,
+      {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Failed to fetch event:", errorText);
+      return;
+    }
+
+    const data = await response.json();
+    setEvent(data);
+  };
+
+  fetchEvent();
+}, [id]);
 
   if (!event) return <p>Loading...</p>;
 
