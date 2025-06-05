@@ -11,7 +11,7 @@ const EventDetails = () => {
 
 useEffect(() => {
   const fetchEvent = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
 
     const response = await fetch(
       `https://ventixe-eventmanagement-ctbse9a6f5f0h4h9.swedencentral-01.azurewebsites.net/api/Events/${id}`,
