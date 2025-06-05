@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_URLS } from '../../../config';
 
 const BookingModal = ({ isOpen, onClose, eventId }) => {
   const { token } = useAuth();
@@ -9,7 +10,7 @@ const BookingModal = ({ isOpen, onClose, eventId }) => {
   const [seats, setSeats] = useState(1);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [error, setError] = useState('');
-  const apiUrl = import.meta.env.VITE_BOOKING_API_URL;
+  const apiUrl = API_URLS.booking;
 
   useEffect(() => {
     if (modalRef.current) {
@@ -35,7 +36,7 @@ const BookingModal = ({ isOpen, onClose, eventId }) => {
         eventId,
         userId,
         ticketQuantity: seats,
-        packageId: null // valfri
+        packageId: null
       };
 
       const response = await fetch(`${apiUrl}/api/booking`, {
@@ -46,6 +47,7 @@ const BookingModal = ({ isOpen, onClose, eventId }) => {
         },
         body: JSON.stringify(booking)
       });
+
 
       if (!response.ok) {
         const data = await response.text();
