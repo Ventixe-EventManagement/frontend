@@ -1,0 +1,92 @@
+.side-navbar {
+  grid-area: nav;
+  background-color: var(--nav-background-color);
+  padding: 2rem 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  flex-shrink: 0;
+  align-self: stretch;
+  min-height: 100dvh;
+  padding: 24px 0px;
+}
+
+.side-navbar .logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding-left: 2rem;
+  padding-bottom: 1.5rem;;
+}
+
+.side-navbar .logo img {
+  width: 123px;
+  height: auto;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-links li {
+  width: 100%;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--secondary-100);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding-left: 1.5rem;
+  transition: color 0.2s;
+}
+
+.nav-links a.active {
+  color: var(--primary-100);
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.navbar-bottom {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+.sign-out-btn {
+  width: 100%;
+  background-color:var(--gray-40);
+  color: var(--secondary-100);
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.sign-out-btn:hover {
+  background-color: var(--gray-50);
+}

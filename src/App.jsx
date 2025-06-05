@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-
 import CenterLayout from './assets/layouts/CenterLayout.jsx';
 import PortalLayout from './assets/layouts/PortalLayout.jsx';
 import PrivateRoute from './assets/utils/PrivateRoute.jsx';
