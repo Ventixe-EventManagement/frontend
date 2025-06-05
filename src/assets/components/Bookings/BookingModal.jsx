@@ -1,48 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
 import { jwtDecode } from 'jwt-decode';
-import './BookingModal.css';
+import { useAuth } from '../../contexts/AuthContext';
 
 const BookingModal = ({ isOpen, onClose, eventId }) => {
-  const modalRef = useRef(null);
   const { token } = useAuth();
-  const [ticketQuantity, setTicketQuantity] = useState(1);
-  const [status, setStatus] = useState("");
+  const modalRef = useRef(null);
+
+  const [seats, setSeats] = useState(1);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const apiUrl = import.meta.env.VITE_BOOKING_API_URL;
 
   useEffect(() => {
     if (modalRef.current) {
-      if (isOpen) modalRef.current.showModal();
-      else modalRef.current.close();
+      if (isOpen && !modalRef.current.open) modalRef.current.showModal();
+      else if (!isOpen && modalRef.current.open) modalRef.current.close();
     }
   }, [isOpen]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("");
+    setError('');
 
-    if (!token) {
-      setStatus("Du måste vara inloggad.");
-      return;
-    }
-
-    let userId;
     try {
+      if (!token) {
+        setError("Du måste vara inloggad för att boka.");
+        return;
+      }
+
       const decoded = jwtDecode(token);
-      userId = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-    } catch {
-      setStatus("Fel vid tolkning av token.");
-      return;
-    }
+      const userId = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
-    const booking = {
-      eventId,
-      userId,
-      ticketQuantity,
-      packageId: null
-    };
+      const booking = {
+        eventId,
+        userId,
+        ticketQuantity: seats,
+        packageId: null // valfri
+      };
 
-    try {
-      const response = await fetch("https://ventixe-bookingservice.azurewebsites.net/api/booking", {
+      const response = await fetch(`${apiUrl}/api/booking`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,42 +48,42 @@ const BookingModal = ({ isOpen, onClose, eventId }) => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        setStatus(`Kunde inte boka: ${errorText}`);
-        return;
+        const data = await response.text();
+        throw new Error(data || 'Kunde inte boka eventet.');
       }
 
-      setStatus("✅ Bokning genomförd!");
+      setBookingSuccess(true);
     } catch (err) {
-      setStatus("❌ Ett tekniskt fel inträffade.");
+      setError(err.message || 'Något gick fel.');
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <dialog className="booking-modal" ref={modalRef} onClose={onClose}>
-      <h3>Boka plats</h3>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Antal biljetter:
-          <select
-            value={ticketQuantity}
-            onChange={(e) => setTicketQuantity(Number(e.target.value))}
-          >
-            {Array.from({ length: 10 }, (_, i) => (
-              <option key={i + 1} value={i + 1}>
-                {i + 1}
-              </option>
+    <dialog ref={modalRef} className="modal">
+      {bookingSuccess ? (
+        <div>
+          <h2>Bokning bekräftad!</h2>
+          <button onClick={onClose}>Stäng</button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <h2>Boka event</h2>
+
+          <label htmlFor="seats">Antal biljetter:</label>
+          <select id="seats" value={seats} onChange={(e) => setSeats(Number(e.target.value))}>
+            {[...Array(10)].map((_, i) => (
+              <option key={i + 1} value={i + 1}>{i + 1}</option>
             ))}
           </select>
-        </label>
 
-        <div className="modal-buttons">
+          {error && <p className="error">{error}</p>}
+
           <button type="submit">Bekräfta bokning</button>
           <button type="button" onClick={onClose}>Avbryt</button>
-        </div>
-
-        {status && <p className="status-message">{status}</p>}
-      </form>
+        </form>
+      )}
     </dialog>
   );
 };
