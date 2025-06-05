@@ -10,17 +10,30 @@ const MyEventCard = ({ event, onDelete }) => {
   const handleDelete = async () => {
     if (!window.confirm('Är du säker på att du vill radera detta event?')) return;
 
-    const response = await fetch(`${API_URLS.event}/api/events/${event.id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await fetch(`${API_URLS.event}/api/events/${event.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
-    if (response.ok) {
-      onDelete();
-    } else {
-      alert('Misslyckades att radera eventet.');
+      if (!response.ok) {
+        const errText = await response.text();
+        console.error('Serverfel:', errText);
+        alert('Misslyckades att radera eventet.');
+        return;
+      }
+
+      if (typeof onDelete === 'function') {
+        onDelete();
+      } else {
+        console.warn('onDelete är inte en funktion.');
+      }
+
+    } catch (err) {
+      console.error('❌ Error deleting event:', err);
+      alert('Tekniskt fel vid radering av event.');
     }
   };
 
