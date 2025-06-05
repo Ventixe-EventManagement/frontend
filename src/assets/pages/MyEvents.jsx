@@ -30,6 +30,10 @@ const MyEvents = () => {
     fetchMyEvents();
   }, [token]);
 
+  const handleDeleteEvent = (id) => {
+    setEvents((prev) => prev.filter((event) => event.id !== id));
+  };
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Mina Events</h2>
@@ -61,7 +65,7 @@ const MyEvents = () => {
               <EventCard
                 key={event.id}
                 event={event}
-                showActions={true}
+                onDelete={() => handleDeleteEvent(event.id)}
               />
             ))}
           </div>
