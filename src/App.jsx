@@ -10,6 +10,8 @@ import CompleteProfilePage from './assets/pages/CompleteProfilePage.jsx';
 import Home from './assets/pages/Home.jsx';
 import Events from './assets/pages/Events.jsx';
 import EventDetails from './assets/pages/EventDetails.jsx';
+import Bookings from './assets/pages/Bookings.jsx';
+
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="events" element={<Events />} />
         <Route path="events/:id" element={<EventDetails />} />
+        <Route path="bookings" element={<Bookings />} />
       </Route>
 
       {/* Fallback: alla okända vägar → login */}
