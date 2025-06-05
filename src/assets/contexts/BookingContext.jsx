@@ -15,18 +15,14 @@ export const BookingProvider = ({ children }) => {
     try {
       setLoading(true);
 
-      const decoded = jwtDecode(token);
-      const userId =
-        decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-
       const response = await axios.get(
-        `${API_URLS.booking}/api/booking/user/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  `${API_URLS.booking}/api/booking/mine`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       setBookings(response.data || []);
     } catch (error) {
