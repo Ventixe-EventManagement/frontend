@@ -1,11 +1,11 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import CenterLayout from './assets/layouts/CenterLayout.jsx';
 import PortalLayout from './assets/layouts/PortalLayout.jsx';
 import PrivateRoute from './assets/utils/PrivateRoute.jsx';
 import Login from './assets/pages/Login.jsx';
-import RegisterEmailPage from './assets/pages/RegisterEmailPage'
-import VerifyEmailPage from './assets/pages/VerifyEmailPage'
+import RegisterEmailPage from './assets/pages/RegisterEmailPage';
+import VerifyEmailPage from './assets/pages/VerifyEmailPage';
 import CompleteProfilePage from './assets/pages/CompleteProfilePage.jsx';
 import Home from './assets/pages/Home.jsx';
 import Events from './assets/pages/Events.jsx';
@@ -14,7 +14,7 @@ import EventDetails from './assets/pages/EventDetails.jsx';
 function App() {
   return (
     <Routes>
-      {/* Ej skyddat) */}
+      {/* Ej skyddat */}
       <Route element={<CenterLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterEmailPage />} />
@@ -32,6 +32,9 @@ function App() {
         <Route path="events" element={<Events />} />
         <Route path="events/:id" element={<EventDetails />} />
       </Route>
+
+      {/* Fallback: alla okända vägar → login */}
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
 }

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EventDetailsCard from "../components/Events/EventDetailsCard";
+import BookingModal from "../components/Bookings/BookingModal";
 
 const EventDetails = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -21,6 +23,13 @@ const EventDetails = () => {
   return (
     <div className="event-details-page">
       <EventDetailsCard event={event} />
+      <button onClick={() => setShowModal(true)}>Boka detta event</button>
+
+      <BookingModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        eventId={id}
+      />
     </div>
   );
 };
