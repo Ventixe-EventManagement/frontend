@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { API_URLS } from '../../config.js';
+import { Link, useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
   const [form, setForm] = useState({
@@ -43,25 +43,29 @@ const RegisterForm = () => {
     }
   };
 
-  return (
-    <div className="auth-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Create Account</h2>
-        {error && <div className="error-box">{error}</div>}
+return (
+  <div className="auth-container">
+    <form className="login-form" onSubmit={handleSubmit}>
+      <h2>Create Account</h2>
+      {error && <div className="error-box">{error}</div>}
 
-        <label>Email</label>
-        <input type="email" name="email" value={form.email} onChange={handleChange} required />
+      <label>Email</label>
+      <input type="email" name="email" value={form.email} onChange={handleChange} required />
 
-        <label>Password</label>
-        <input type="password" name="password" value={form.password} onChange={handleChange} required />
+      <label>Password</label>
+      <input type="password" name="password" value={form.password} onChange={handleChange} required />
 
-        <label>Confirm Password</label>
-        <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
+      <label>Confirm Password</label>
+      <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required />
 
-        <button type="submit" className="primary-button">Submit</button>
-      </form>
-    </div>
-  );
+      <button type="submit" className="primary-button">Submit</button>
+
+      <p className="register-link">
+        Already have an account? <br></br><Link to="/login">Sign in here</Link>
+      </p>
+    </form>
+  </div>
+);
 };
 
 export default RegisterForm;

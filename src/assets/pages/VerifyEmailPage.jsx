@@ -10,7 +10,6 @@ const VerifyEmailPage = () => {
   const [code, setCode] = useState('');
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
-  const [resendMessage, setResendMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -40,22 +39,6 @@ const VerifyEmailPage = () => {
     }
   };
 
-  const handleResend = async () => {
-    setResendMessage('');
-    try {
-      const response = await fetch(`${API_URLS.account}/api/accounts/resend-verification`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-
-      const data = await response.json();
-      setResendMessage(response.ok ? 'En ny kod har skickats!' : (data.error || 'Kunde inte skicka ny kod.'));
-    } catch {
-      setResendMessage('Något gick fel vid försök att skicka kod.');
-    }
-  };
-
   if (!email) {
     return (
       <div className="auth-container">
@@ -75,7 +58,6 @@ const VerifyEmailPage = () => {
 
         {status && <div className="success-box">{status}</div>}
         {error && <div className="error-box">{error}</div>}
-        {resendMessage && <div className="info-box">{resendMessage}</div>}
 
         <input
           type="text"
@@ -86,10 +68,6 @@ const VerifyEmailPage = () => {
         />
 
         <button type="submit" className="primary-button">Verifiera</button>
-
-        <button type="button" onClick={handleResend} className="secondary-button" style={{ marginTop: '1rem' }}>
-          Skicka om kod
-        </button>
       </form>
     </div>
   );

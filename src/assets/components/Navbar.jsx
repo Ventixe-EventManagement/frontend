@@ -32,6 +32,12 @@ const Navbar = () => {
               <span>Events</span>
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/my-events" className={({ isActive }) => isActive ? 'active' : ''}>
+              <img src="/icons/CalendarDots.svg" alt="" className="nav-icon" />
+              <span>My Events</span>
+            </NavLink>
+          </li>
         </ul>
       </div>
       <div className="navbar-bottom">

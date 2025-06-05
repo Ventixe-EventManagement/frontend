@@ -131,6 +131,7 @@ body, section, div, header, footer, main, aside, nav, blockquote, p, span {
     justify-content: center;
     align-items: center;
     height: 100dvh;
+    background-color: var(--gray-20);
 }
 
 .portal-wrapper {
