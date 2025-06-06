@@ -472,3 +472,9 @@ button.sign-out-btn:hover {
 .danger-button:hover {
   background: #d9363e;
 }
+
+.my-event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}

@@ -34,33 +34,27 @@ const MyEvents = () => {
     setEvents((prev) => prev.filter((event) => event.id !== id));
   };
 
-  return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Mina Events</h2>
+return (
+  <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+    <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Mina Events</h2>
 
-      {loading ? (
-        <p>Laddar dina events...</p>
-      ) : events.length === 0 ? (
-        <>
-          <p style={{ marginBottom: '1.5rem' }}>Du har inte skapat några events ännu.</p>
+    {loading ? (
+      <p>Laddar dina events...</p>
+    ) : (
+      <>
+        <div style={{ textAlign: 'right', marginBottom: '2rem' }}>
           <button
             className="primary-button"
             onClick={() => navigate('/events/create')}
           >
             Skapa nytt event
           </button>
-        </>
-      ) : (
-        <>
-          <button
-            className="primary-button"
-            style={{ marginBottom: '2rem' }}
-            onClick={() => navigate('/events/create')}
-          >
-            Skapa nytt event
-          </button>
+        </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        {events.length === 0 ? (
+          <p>Du har inte skapat några events ännu.</p>
+        ) : (
+          <div className="my-event-grid">
             {events.map((event) => (
               <EventCard
                 key={event.id}
@@ -69,10 +63,11 @@ const MyEvents = () => {
               />
             ))}
           </div>
-        </>
-      )}
-    </div>
-  );
+        )}
+      </>
+    )}
+  </div>
+);
 };
 
 export default MyEvents;
