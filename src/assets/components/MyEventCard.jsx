@@ -43,13 +43,19 @@ const MyEventCard = ({ event, onDelete }) => {
       <p><strong>Datum:</strong> {new Date(event.eventDate).toLocaleDateString()}</p>
       <p><strong>Plats:</strong> {event.location}</p>
 
-      <div className="actions">
-        <button onClick={() => navigate(`/events/edit/${event.id}`)} className="btn btn-outline">
-          Redigera
-        </button>
-        <button onClick={handleDelete} className="btn btn-danger">
-          Radera
-        </button>
+    <div className="actions">
+      <button
+        onClick={() => navigate(`/events/edit/${event.id}`)}
+        className="primary-button outlined-button"
+      >
+        Redigera
+      </button>
+      <button
+        onClick={handleDelete}
+        className="primary-button danger-button"
+      >
+        Radera
+      </button>
       </div>
     </div>
   );

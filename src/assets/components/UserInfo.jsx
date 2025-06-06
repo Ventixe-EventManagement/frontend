@@ -1,12 +1,10 @@
-import React from "react";
-import { useAuth } from "../contexts/AuthContext";
+import React from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 const UserInfo = () => {
   const { user } = useAuth();
 
-  if (!user) {
-    return null; // eller visa "Gäst" eller laddar...
-  }
+  if (!user) return null;
 
   return (
     <div className="user-info">
