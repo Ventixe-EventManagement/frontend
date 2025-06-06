@@ -453,3 +453,22 @@ nav.side-navbar {
 button.sign-out-btn:hover {
   background-color: var(--cool-gray-30);
 }
+
+.outlined-button {
+  background: white;
+  color: #ef67f1;
+  border: 2px solid #ef67f1;
+}
+
+.outlined-button:hover {
+  background: #ef67f1;
+  color: white;
+}
+
+.danger-button {
+  background: #ff4d4f;
+}
+
+.danger-button:hover {
+  background: #d9363e;
+}
