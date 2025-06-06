@@ -10,50 +10,66 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem('authToken');
-    if (storedToken) {
-      setToken(storedToken);
+useEffect(() => {
+  const storedToken = localStorage.getItem('authToken');
+  if (storedToken) {
+    setToken(storedToken);
+    try {
+      const decoded = jwtDecode(storedToken);
+      setUser({
+        id: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+        name: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+        role: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'],
+      });
+    } catch {
+      console.warn('Ogiltig token vid initial inläsning');
     }
-    setLoading(false);
-  }, []);
+  }
+  setLoading(false);
+}, []);
 
   const login = async (email, password) => {
-    try {
-      const response = await axios.post(`${API_URLS.auth}/api/signin/login`, {
-        email,
-        password,
-      });
+  try {
+    const response = await axios.post(`${API_URLS.auth}/api/signin/login`, {
+      email,
+      password,
+    });
 
-      const { token } = response.data;
-      localStorage.setItem('authToken', token);
-      setToken(token);
+    const { token } = response.data;
+    localStorage.setItem('authToken', token);
+    setToken(token);
 
-      const decoded = jwtDecode(token);
-      const userId =
-        decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+    const decoded = jwtDecode(token);
+    const userData = {
+      id: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+      name: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+      role: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'],
+    };
+    setUser(userData);
 
-      const profileResponse = await axios.get(
-        `${API_URLS.profile}/api/profile/exists`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (profileResponse.data?.exists === true) {
-        window.location.href = '/';
-      } else {
-        window.location.href = `/complete-profile?email=${encodeURIComponent(email)}`;
+    // Kolla om profilen är komplett
+    const profileResponse = await axios.get(
+      `${API_URLS.profile}/api/profile/exists`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
       }
+    );
 
-      return { success: true };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.response?.data?.error || 'Login failed',
-      };
+    if (profileResponse.data?.exists === true) {
+      window.location.href = '/';
+    } else {
+      window.location.href = `/complete-profile?email=${encodeURIComponent(email)}`;
     }
-  };
+
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.error || 'Login failed',
+    };
+  }
+};
+
 
   const logout = () => {
     localStorage.removeItem('authToken');

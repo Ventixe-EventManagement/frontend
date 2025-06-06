@@ -1,11 +1,12 @@
 import React from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 const UserInfo = () => {
-  // Tillfällig hårdkodad användare – byt mot auth-data senare
-  const user = {
-    name: "Orlando Laurentius",
-    role: "Admin",
-  };
+  const { user } = useAuth();
+
+  if (!user) {
+    return null; // eller visa "Gäst" eller laddar...
+  }
 
   return (
     <div className="user-info">
