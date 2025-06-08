@@ -7,7 +7,6 @@ const BookingCard = ({ booking, onDelete, onUpdate }) => {
   const [ticketQuantity, setTicketQuantity] = useState(booking.ticketQuantity);
   const [eventName, setEventName] = useState('Laddar...');
 
-  // Hämtar eventets namn baserat på eventId
   useEffect(() => {
     const fetchEventName = async () => {
       try {
@@ -42,27 +41,31 @@ const BookingCard = ({ booking, onDelete, onUpdate }) => {
 
   return (
     <div className="booking-card">
-      <div className="booking-content">
-        <h3>📅 Bokning</h3>
-        <p><strong>Event:</strong> {eventName}</p>
+      <div className="booking-header">
+        <div className="booking-info">
+          <h3>📅 Bokning</h3>
+          <p><strong>Event:</strong> {eventName}</p>
 
-        {editing ? (
-          <>
-            <label><strong>Antal biljetter:</strong></label>
-            <input
-              type="number"
-              value={ticketQuantity}
-              onChange={(e) => setTicketQuantity(Number(e.target.value))}
-              min={1}
-            />
-            <button onClick={handleUpdateClick} className="btn btn-outline">Spara</button>
-            <button onClick={() => setEditing(false)} className="btn btn-secondary">Avbryt</button>
-          </>
-        ) : (
-          <p><strong>Antal biljetter:</strong> {booking.ticketQuantity}</p>
-        )}
+          {editing ? (
+            <>
+              <label><strong>Antal biljetter:</strong></label>
+              <input
+                type="number"
+                value={ticketQuantity}
+                onChange={(e) => setTicketQuantity(Number(e.target.value))}
+                min={1}
+              />
+              <div className="booking-edit-actions">
+                <button onClick={handleUpdateClick} className="btn btn-outline">Spara</button>
+                <button onClick={() => setEditing(false)} className="btn btn-secondary">Avbryt</button>
+              </div>
+            </>
+          ) : (
+            <p><strong>Antal biljetter:</strong> {booking.ticketQuantity}</p>
+          )}
 
-        <p><strong>Bokningsdatum:</strong> {bookingDate} kl. {bookingTime}</p>
+          <p><strong>Bokningsdatum:</strong> {bookingDate} kl. {bookingTime}</p>
+        </div>
 
         <div className="booking-actions">
           <button onClick={() => setEditing(true)} className="btn btn-outline">Uppdatera biljetter</button>

@@ -1,60 +1,33 @@
 .booking-card {
   background-color: #fff;
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.booking-card:hover {
-  transform: scale(1.01);
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
 }
 
-.booking-content p {
-  margin: 0.3rem 0;
-}
-
-.booking-content h3 {
-  margin-bottom: 0.6rem;
-  color: #333;
+.booking-info {
+  flex-grow: 1;
 }
 
 .booking-actions {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  margin-top: 1.2rem;
-  align-items: center;
+  align-items: flex-end;
+  gap: 0.6rem;
 }
 
-.btn {
-  width: 100%;
-  padding: 0.8rem;
-  border-radius: 2rem;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.btn-outline {
-  background-color: transparent;
-  border: 2px solid #f26cf9;
-  color: #f26cf9;
-}
-
-.btn-outline:hover {
-  background-color: #f26cf9;
-  color: white;
-}
-
-.btn-danger {
-  background-color: #ff4d4d;
-  color: #fff;
-  border: none;
-}
-
-.btn-danger:hover {
-  background-color: #e60000;
+.booking-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
