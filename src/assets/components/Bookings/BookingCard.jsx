@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './BookingCard.css';
+import { API_URLS } from '../../../config';
+
 const BookingCard = ({ booking, onDelete, onUpdate }) => {
-  const [editing, setEditing] = React.useState(false);
-  const [ticketQuantity, setTicketQuantity] = React.useState(booking.ticketQuantity);
+  const [editing, setEditing] = useState(false);
+  const [ticketQuantity, setTicketQuantity] = useState(booking.ticketQuantity);
+  const [eventName, setEventName] = useState('Laddar...');
+
+  // Hämtar eventets namn baserat på eventId
+  useEffect(() => {
+    const fetchEventName = async () => {
+      try {
+        const res = await fetch(`${API_URLS.event}/api/events/${booking.eventId}`);
+        if (!res.ok) throw new Error('Misslyckades att hämta event');
+        const data = await res.json();
+        setEventName(data.eventName || 'Okänt event');
+      } catch (error) {
+        console.error("Fel vid hämtning av eventnamn:", error);
+        setEventName('Okänt event');
+      }
+    };
+
+    fetchEventName();
+  }, [booking.eventId]);
 
   const handleUpdateClick = () => {
     onUpdate(booking.id, ticketQuantity);
@@ -24,7 +44,7 @@ const BookingCard = ({ booking, onDelete, onUpdate }) => {
     <div className="booking-card">
       <div className="booking-content">
         <h3>📅 Bokning</h3>
-        <p><strong>Event:</strong> {booking.eventName || 'Okänt event'}</p>
+        <p><strong>Event:</strong> {eventName}</p>
 
         {editing ? (
           <>
@@ -43,7 +63,6 @@ const BookingCard = ({ booking, onDelete, onUpdate }) => {
         )}
 
         <p><strong>Bokningsdatum:</strong> {bookingDate} kl. {bookingTime}</p>
-        {booking.packageId && <p><strong>Paket:</strong> {booking.packageId}</p>}
 
         <div className="booking-actions">
           <button onClick={() => setEditing(true)} className="btn btn-outline">Uppdatera biljetter</button>
