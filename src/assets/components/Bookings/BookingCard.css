@@ -19,3 +19,41 @@
   margin-bottom: 0.6rem;
   color: #333;
 }
+
+.booking-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Reuse same button styles as events */
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid #888;
+  color: #333;
+}
+
+.btn-outline:hover {
+  background-color: #f0f0f0;
+}
+
+.btn-danger {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #e60000;
+}
