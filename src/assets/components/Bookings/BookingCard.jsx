@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './BookingCard.css';
 import { API_URLS } from '../../../config';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const BookingCard = ({ booking, onDelete, onUpdate }) => {
   const [editing, setEditing] = useState(false);
