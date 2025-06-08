@@ -31,3 +31,37 @@
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
+
+.btn {
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-outline {
+  border: 2px solid #f26cf9;
+  color: #f26cf9;
+  background-color: white;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.btn-outline:hover {
+  background-color: #f26cf9;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #ff5252;
+  color: white;
+  width: 100%;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #ff2f2f;
+}
