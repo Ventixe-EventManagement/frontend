@@ -7,6 +7,8 @@ const BookingCard = ({ booking, onDelete, onUpdate }) => {
   const [ticketQuantity, setTicketQuantity] = useState(booking.ticketQuantity);
   const [eventName, setEventName] = useState('Laddar...');
 
+  console.log("Event ID:", booking.eventId);
+  
   useEffect(() => {
     const fetchEventName = async () => {
       try {
