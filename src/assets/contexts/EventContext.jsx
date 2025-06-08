@@ -1,47 +1,56 @@
-import axios from 'axios'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { useAuth } from './AuthContext'
+// This context was created with the help of ChatGPT (OpenAI).
+// It provides global access to the list of events and loading state
+// by fetching data from the backend using the authenticated user's token.
 
-const EventContext = createContext()
+import axios from 'axios';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useAuth } from './AuthContext';
 
+// Create a context to share event data across the app
+const EventContext = createContext();
+
+// Context provider that wraps part of the app needing event data
 export const EventProvider = ({ children }) => {
-  const [events, setEvents] = useState([])
-  const [loading, setLoading] = useState(true)
-  const { token } = useAuth()
+  const [events, setEvents] = useState([]);     // Stores fetched events
+  const [loading, setLoading] = useState(true); // Tracks loading state
+  const { token } = useAuth();                  // Get auth token from context
 
+  // Function to fetch events from backend
   const fetchEvents = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios.get(
         'https://ventixe-eventmanagement-ctbse9a6f5f0h4h9.swedencentral-01.azurewebsites.net/api/events',
         {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}` // Attach token for secure access
           }
         }
-      )
-      setEvents(response.data)
+      );
+      setEvents(response.data);
     } catch (error) {
-      console.error('Failed to fetch events', error)
+      console.error('Failed to fetch events', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
+  // Fetch events when the token changes (i.e., on login/logout)
   useEffect(() => {
     if (token) {
-      fetchEvents()
+      fetchEvents();
     } else {
-      setEvents([])
-      setLoading(false)
+      setEvents([]);       // Clear events when user logs out
+      setLoading(false);
     }
-  }, [token])
+  }, [token]);
 
   return (
     <EventContext.Provider value={{ events, loading }}>
       {children}
     </EventContext.Provider>
-  )
-}
+  );
+};
 
-export const useEvents = () => useContext(EventContext)
+// Custom hook to access the event context
+export const useEvents = () => useContext(EventContext);
